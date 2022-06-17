@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<BankingApp.Models.ViewModels.AccountViewModels>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "All Accounts";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>All Accounts</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,9 +13,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+          @*  <th>
                 @Html.DisplayNameFor(model => model.AccountID)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.AccountName)
             </th>
@@ -26,23 +26,43 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Balance)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+
+        @if (Model != null)
+        {
+            if (Model.Count() > 0)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @* <td>
+                            @Html.DisplayFor(modelItem => item.AccountID)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AccountName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Balance)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+
+                }
+            }
+            else
+            {
+                <tr><td colspan="3">No Accounts available yet. Please click <a asp-action="Create">Create New account </a> to get started.</td></tr>
+            } 
+
 }
+            else //If Object is null, page should not break or divulge sensitive exception messages to the public.
+            {
+                <tr><td  colspan="3">No Accounts available yet.  </td></tr>
+            } 
+
+
     </tbody>
 </table>
