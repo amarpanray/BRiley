@@ -8,20 +8,20 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Account_Transaction] (
-    [Account_TransactionID] INT IDENTITY (1, 1) NOT NULL,
+CREATE TABLE [dbo].[AccountTransaction] (
+    [AccountTransactionID] INT IDENTITY (1, 1) NOT NULL,
     [AccountID]             INT NULL,
     [TransactionID]         INT NULL, 
 	
 	 
-	    PRIMARY KEY (  [Account_TransactionID]), 
+	    PRIMARY KEY (  [AccountTransactionID]), 
 	
-	    CONSTRAINT FK_Account_Transactions FOREIGN KEY (AccountID)
+	    CONSTRAINT FK_AccountTransactions FOREIGN KEY (AccountID)
         REFERENCES Account (AccountID)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
 
-		CONSTRAINT FK_Transaction_Account FOREIGN KEY (TransactionID)
+		CONSTRAINT FK_TransactionAccount FOREIGN KEY (TransactionID)
         REFERENCES [Transaction] (TransactionID)
         ON DELETE CASCADE
         ON UPDATE CASCADE

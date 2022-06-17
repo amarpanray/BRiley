@@ -9,9 +9,8 @@ Instructions.
 	Solution comes with all necessary dependencies.
 	Please run create scripts on your database. They are in a folder called "SQL Scripts" 
 
-		Create table Account. Run First
-		Create table Transaction. Run Second
-		Create table Account_Transaction. Run Third
+		Create Account. Run First
+		Create Transaction. Run Second
+		Create AccountTransaction. Run Third
 
-		Create Foreign Key Constraints to maintain data integrity
 	    Update appsettings.json with YOUR connection string (or appsettings.Development.json if running IIS Express on a non-server machine).
