@@ -1,4 +1,7 @@
-﻿using BankingApp.Models.ViewModels;
+﻿using BankingApp.Models.Context;
+using BankingApp.Models.ViewModels;
+using BankingApp.Repository;
+using BankingApp.Repository.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,10 +9,24 @@ namespace BankingApp.Controllers
 {
     public class AccountsController : Controller
     {
+        private readonly IAccountRepository _accountRepo;
+
+        public AccountsController(IAccountRepository accountRepo)
+        {
+               _accountRepo = accountRepo;
+        }
         // GET: AccountsController
         public ActionResult Index()
         {
-            return View();
+            AccountViewModels model = new AccountViewModels();
+            var accounts = _accountRepo.GetAccounts();
+
+            model.Accounts = new List<AccountViewModels>();
+            foreach (var a in accounts)
+            {
+                model.Accounts.Add(new AccountViewModels {AccountID = a.AccountId, AccountName = a.Name, Balance = a.Balance });
+            }
+            return View(model);
         }
 
         // GET: AccountsController/Details/5
@@ -29,9 +46,24 @@ namespace BankingApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(AccountViewModels model)
         {
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                //Check if an account with the same name already exists
+                var accountExists = _accountRepo.GetAccounts().Where(x => x.Name == model.AccountName).Any();
+
+                if (accountExists)
+                {
+                    ModelState.AddModelError("AccountNameExists", "An account with this name already exists in the system. Please choose a different account name.");
+                }
+
+                if (ModelState.IsValid) 
+                {
+                    var account = new Account { Balance = model.Balance, Name = model.AccountName };
+                    _accountRepo.AddAccount(account);
+                    return RedirectToAction(nameof(Index));
+                }
+                else return View(model);
             }
             catch
             {

@@ -9,6 +9,8 @@ namespace BankingApp.Models.ViewModels
 
         [Required(ErrorMessage = "An account name is required")]
         public string? AccountName { get; set; }
-        public double Balance { get; set; } 
+        public decimal? Balance { get; set; } 
+
+        public List<AccountViewModels> ? Accounts { get; set; }
     }
 }

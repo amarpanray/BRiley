@@ -3,14 +3,22 @@
 	Built using Visual Studio Community 2022
 	Uses Dependency Injection
 	Uses Repository Pattern
+	Uses Database First (as requested by Vikas Chopra)
 	Uses SQL Express (compatible with non express versions)
 
 Instructions.
 	Solution comes with all necessary dependencies.
-	Please run create scripts on your database. They are in a folder called "SQL Scripts" 
+	Please run "create scripts" on your database. They are in a folder called "SQL Scripts" 
 
 		Create Account. Run First
 		Create Transaction. Run Second
-		Create AccountTransaction. Run Third
+		Create AccountTransaction. Run Third (may not need this)
 
 	    Update appsettings.json with YOUR connection string (or appsettings.Development.json if running IIS Express on a non-server machine).
+
+
+Step By Step Approach:
+Created a .Net Core solution using Visual Studio 2022 (Community Version).
+Designed 2 tables in the database. One for Accounts and one for Transactions.
+Installed Entity Framework with all necessary dependencies.
+Generated models from database using a Database First approach by running scaffolding script.
