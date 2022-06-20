@@ -109,7 +109,7 @@ namespace BankingApp.Controllers
             {
 
                 var newAvailableBalance = (model.FromBalance - model.TransferAmount);
-                var newBalance = (model.ToBalance + model.TransferAmount);
+                var newBalance = ((model.ToBalance == null? 0: model.ToBalance) + model.TransferAmount);
 
                 //Create two instances of the Repository Accounts.
                 var accountFrom = new Account { AccountId = model.FromAccountId, Balance = newAvailableBalance, Name = model.FromAccount}; 
@@ -133,6 +133,7 @@ namespace BankingApp.Controllers
                 };
 
                 _transact.AddTransaction(transaction);
+                return RedirectToAction("Index", "Transactions", new { success = true });
             }
 
             return View(model);

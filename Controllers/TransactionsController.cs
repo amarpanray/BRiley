@@ -13,10 +13,13 @@ namespace BankingApp.Controllers
         {
             _transactRepo = transactRepo;
         }
-        public ActionResult Index()
+        public ActionResult Index([FromQuery(Name = "success")] string transaction)
         {
             TransactionViewModels model = new TransactionViewModels();
-
+            if (transaction == "True")
+            {
+                model.ErrorMessage = "Transaction success: Your transaction was successful. Please use the table below to review ALL transactions.";
+            }
             try
             {
                 var transactions = _transactRepo.GetTransactions();

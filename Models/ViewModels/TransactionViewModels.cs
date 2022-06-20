@@ -12,5 +12,7 @@
         public decimal? BalanceTo { get; set; }
 
         public List<TransactionViewModels> Transactions { get; set; }
+
+        public string? ErrorMessage { get; set; }
     }
 }
