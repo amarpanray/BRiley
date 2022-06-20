@@ -86,7 +86,7 @@ namespace BankingApp.Controllers
 
                 if (ModelState.IsValid) 
                 {
-                    var account = new Account { Balance = model.Balance, Name = model.AccountName };
+                    var account = new Account { Balance = (model.Balance == null ? 0: model.Balance), Name = model.AccountName };
                     _accountRepo.AddAccount(account);
                     return RedirectToAction(nameof(Index));
                 }
