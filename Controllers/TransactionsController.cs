@@ -7,16 +7,16 @@ namespace BankingApp.Controllers
 {
     public class TransactionsController : Controller
     {
-        private readonly ITransactionRepository _transact;
+        private readonly ITransactionRepository _transactRepo;
         // GET: TransactionsController
-        public TransactionsController(ITransactionRepository transact)
+        public TransactionsController(ITransactionRepository transactRepo)
         {
-            _transact = transact;
+            _transactRepo = transactRepo;
         }
         public ActionResult Index()
         {
             TransactionViewModels model = new TransactionViewModels();
-            var transactions = _transact.GetTransactions();
+            var transactions = _transactRepo.GetTransactions();
 
             if (transactions != null)
             {
@@ -43,7 +43,27 @@ namespace BankingApp.Controllers
         // GET: TransactionsController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            TransactionViewModels model = new TransactionViewModels();
+
+            var transaction = _transactRepo.GetTransactions().Where(x => x.TransactionId == id).FirstOrDefault();
+
+            if (transaction != null)
+            {
+                model.TransactionID = transaction.TransactionId;
+                model.FromAccount = transaction.FromAccount;
+                model.ToAccount = transaction.ToAccount;
+                model.TransactionTime = transaction.TransactionTime;
+                model.TransferAmount = transaction.AmountDebited;
+                model.BalanceFrom = transaction.FromAccountBalance;
+                model.BalanceTo = transaction.ToAccountBalance;
+            }
+            else
+            {
+                //In case of compromised request, throw inconspicuous exception to external users
+                throw new Exception("This transaction does not exist in our system.");
+            }
+
+            return View(model);
         }
 
       
