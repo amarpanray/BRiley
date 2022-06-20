@@ -32,7 +32,23 @@ namespace BankingApp.Controllers
         // GET: AccountsController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            AccountViewModels model = new AccountViewModels();
+
+            var account = _accountRepo.GetAccounts().Where(x => x.AccountId == id).FirstOrDefault();
+
+            if (account != null)
+            {
+                model.AccountName = account.Name;
+                model.Balance = account.Balance;
+                model.AccountID = account.AccountId;
+            }
+            else
+            {
+                //In case of compromised request, throw inconspicuous exception to external users
+                throw new Exception("This account does not exist in our system.");
+            }
+
+            return View(model);
         }
 
         // GET: AccountsController/Create
@@ -46,7 +62,6 @@ namespace BankingApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(AccountViewModels model)
         {
-
             try
             {
                 //Check if an account with the same name already exists
@@ -74,38 +89,87 @@ namespace BankingApp.Controllers
         // GET: AccountsController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            AccountViewModels model = new AccountViewModels();
+
+            var account = _accountRepo.GetAccounts().Where(x => x.AccountId == id).FirstOrDefault();
+
+            if (account != null)
+            {
+                model.AccountName = account.Name;
+                model.Balance = account.Balance;
+                model.AccountID = account.AccountId;
+            }
+            else
+            {
+                //In case of compromised request, throw inconspicuous exception to external users
+                throw new Exception("This account does not exist in our system.");
+            }
+
+            return View(model);
         }
 
         // POST: AccountsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(AccountViewModels model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                    var account = new Account { Balance = model.Balance, Name = model.AccountName, AccountId = model.AccountID };
+                    _accountRepo.UpdateAccount(account);
+
+                    return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(model);
             }
         }
 
         // GET: AccountsController/Delete/5
+        [HttpGet]
         public ActionResult Delete(int id)
         {
-            return View();
+            AccountViewModels model = new AccountViewModels();
+
+            var account = _accountRepo.GetAccounts().Where(x => x.AccountId == id).FirstOrDefault();
+
+            if (account != null)
+            {
+                model.AccountName = account.Name;
+                model.Balance = account.Balance;
+                model.AccountID = account.AccountId;
+            }
+            else
+            {
+                //In case of compromised request, throw inconspicuous exception to external users
+                throw new Exception("This account does not exist in our system.");
+            }
+
+            return View(model);
         }
 
-        // POST: AccountsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(AccountViewModels model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+               
+
+                var account = _accountRepo.GetAccounts().Where(x => x.AccountId == model.AccountID).FirstOrDefault();
+
+                if (account != null)
+                {
+                    _accountRepo.DeleteAccount(account);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    //In case of compromised request, throw inconspicuous exception to external users
+                    throw new Exception("This account does not exist in our system.");
+                }
+
             }
             catch
             {

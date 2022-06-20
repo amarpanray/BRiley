@@ -26,7 +26,6 @@
         </tr>
     </thead>
     <tbody>
-
         @if (Model.Accounts != null)
         {
             if (Model.Accounts.Count() > 0)
@@ -41,7 +40,7 @@
                             @Html.DisplayFor(modelItem => item.AccountName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Balance)
+                           @(item.Balance == null ? "0.00": Html.DisplayFor(modelItem => item.Balance)) 
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", new {   id=item.AccountID   }) |
@@ -56,13 +55,10 @@
             {
                 <tr><td colspan="3">No Accounts available yet. Please click <a asp-action="Create">Create New account </a> to get started.</td></tr>
             } 
-
-}
-            else //If Object is null, page should not break or divulge sensitive exception messages to the public.
-            {
-                <tr><td  colspan="3">No Accounts available yet.  </td></tr>
-            } 
-
-
+        }
+        else //If Object is null, page should not break or divulge sensitive exception messages to the public.
+        {
+            <tr><td  colspan="3">No Accounts available yet.  </td></tr>
+        } 
     </tbody>
 </table>
