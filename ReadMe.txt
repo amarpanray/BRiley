@@ -1,6 +1,7 @@
 ﻿Instructions.
-	Solution comes with all necessary dependencies.
-	Github Repository: https://github.com/amarpanray/BRiley
+
+	Get solution from Github Repository: https://github.com/amarpanray/BRiley: Collaborators can pull code and edit and check back in.
+	(Use a git pull command or simply download the zip file)
 	Please run "create scripts" on your database. They are in a folder called "SQL Scripts" 
 
 		Create Account.sql 
@@ -23,9 +24,3 @@ Step By Step Approach:
 	Installed Entity Framework with all necessary dependencies.
 	Generated models from database using a Database First approach by running scaffolding script.
 
-To Do:
-	Extend FindByCondition method to use queries more efficiently.
-	Use some async methods from repository for performance.
-	Is AddScoped better than AddTransient when registering services in Start.cs
-	Add Details page for All Transactions?
-	Testing.
