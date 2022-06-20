@@ -22,6 +22,7 @@ namespace BankingApp
                 options.UseSqlServer(
                     Configuration.GetConnectionString("BRileyDefaultConnection")));
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 

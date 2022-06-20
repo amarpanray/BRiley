@@ -1,14 +1,43 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BankingApp.Models.ViewModels;
+using BankingApp.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingApp.Controllers
 {
     public class TransactionsController : Controller
     {
+        private readonly ITransactionRepository _transact;
         // GET: TransactionsController
+        public TransactionsController(ITransactionRepository transact)
+        {
+            _transact = transact;
+        }
         public ActionResult Index()
         {
-            return View();
+            TransactionViewModels model = new TransactionViewModels();
+            var transactions = _transact.GetTransactions();
+
+            if (transactions != null)
+            {
+                model.Transactions = new List<TransactionViewModels>();
+                foreach (var trans in transactions)
+                {
+                    model.Transactions.Add(new TransactionViewModels { 
+                    FromAccount = trans.FromAccount,
+                    ToAccount = trans.ToAccount,    
+                    TransactionTime = trans.TransactionTime,
+                    TransferAmount = trans.AmountDebited,
+                    BalanceFrom = trans.FromAccountBalance,
+                    BalanceTo = trans.ToAccountBalance,
+                    TransactionID = trans.TransactionId
+                    });
+                
+                }
+            }
+
+
+            return View(model);
         }
 
         // GET: TransactionsController/Details/5
@@ -17,67 +46,6 @@ namespace BankingApp.Controllers
             return View();
         }
 
-        // GET: TransactionsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: TransactionsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: TransactionsController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TransactionsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: TransactionsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: TransactionsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+      
     }
 }

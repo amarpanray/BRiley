@@ -3,9 +3,8 @@
 	Github Repository: https://github.com/amarpanray/BRiley
 	Please run "create scripts" on your database. They are in a folder called "SQL Scripts" 
 
-		Create Account. Run First
-		Create Transaction. Run Second
-		Create AccountTransaction. Run Third (may not need this)
+		Create Account.sql 
+		Create Transaction.sql  		 
 
 	    Update appsettings.json with YOUR connection string (or appsettings.Development.json if running IIS Express on a non-server machine).
 
@@ -23,3 +22,10 @@ Step By Step Approach:
 	Designed 2 tables in the database. One for Accounts and one for Transactions.
 	Installed Entity Framework with all necessary dependencies.
 	Generated models from database using a Database First approach by running scaffolding script.
+
+To Do:
+	Extend FindByCondition method to use queries more efficiently.
+	Use some async methods from repository for performance.
+	Is AddScoped better than AddTransient when registering services in Start.cs
+	Add Details page for All Transactions?
+	Testing.

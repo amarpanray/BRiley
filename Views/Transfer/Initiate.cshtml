@@ -1,5 +1,49 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model BankingApp.Models.ViewModels.TransferViewModels
 @{
+    ViewData["Title"] = "Transfer Funds";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h1>@ViewData["Title"]</h1>
+<form asp-action="Initiate">
+    <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="FromAccount" class="control-label"><strong>From Account</strong></label>
+                    <select asp-for="FromAccountId"  asp-items="@(new SelectList(Model.FromAccounts, "FromAccountId", "FromAccount"))">
+                        <option value="0">Select Account </option>
+                    </select>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="ToAccount" class="control-label"><strong>To Account</strong></label>
+                    <select asp-for="ToAccountId"  
+                        asp-items="@(new SelectList(Model.ToAccounts, "ToAccountId", "ToAccount"))">
+                    <option value="0">Select Account </option>
+                    </select>
+            </div>
+            <div class="col-md-5">
+            <label asp-for="TransferAmount" class="control-label"><strong>Amount to transfer</strong></label>
+                <input asp-for="TransferAmount"  />
+                <input type="submit" value="Transfer" class="btn btn-primary" />
+            </div>     
+        </div>  
+
+        
+</form>
+<script>
+  
+    //$("#FromAccountId").change(function()
+    //{
+    //    var url = "/Transfer/GetAccountTo";
+    //     $.get(url, { id: $("#FromAccountId").val() }, 
+    //     function (data) 
+    //     {  
+    //         if(data != null && $("#FromAccountId").val() != 0)
+    //         { 
+    //            $("#ToAccountId").removeAttr('disabled');
+    //            console.clear();
+    //            console.log(data); 
+    //         }            
+    //     });
+    //});
+</script>

@@ -1,5 +1,88 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model BankingApp.Models.ViewModels.TransactionViewModels 
+
 @{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+          @*  <th>
+              TransactionID 
+            </th>*@
+            <th>
+                 From Account 
+            </th>
+            <th>
+                To Account 
+            </th>
+            <th>
+                 Transaction Time 
+            </th>
+            <th>
+                Amount Debited 
+            </th>
+            <th>
+              From Account Balance
+            </th>
+            <th>
+                To Account Balance
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Transactions != null)
+        {
+            if (Model.Transactions.Count() > 0)
+            {
+              foreach (var item in Model.Transactions)
+                  {
+                    <tr>
+                       @* <td>
+                            @Html.DisplayFor(modelItem => item.TransactionID)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FromAccount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ToAccount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TransactionTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TransferAmount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BalanceFrom)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BalanceTo)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", new {  id=item.TransactionID})  
+                        </td>
+                        </tr>
+                    }  
+            }
+            
+            else
+            {
+                <tr><td>No Transactions available</td></tr>
+            
+            }
+        }
+        else
+        {
+            <tr><td>No Transactions available</td></tr>
+            
+        }
+    </tbody>
+</table>

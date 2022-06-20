@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\BusinessModels\**" />
+    <Content Remove="Models\BusinessModels\**" />
+    <EmbeddedResource Remove="Models\BusinessModels\**" />
+    <None Remove="Models\BusinessModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="SQL Scripts\Create AccountTransaction.sql" />
   </ItemGroup>
 

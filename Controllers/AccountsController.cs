@@ -22,6 +22,7 @@ namespace BankingApp.Controllers
             var accounts = _accountRepo.GetAccounts();
 
             model.Accounts = new List<AccountViewModels>();
+
             foreach (var a in accounts)
             {
                 model.Accounts.Add(new AccountViewModels {AccountID = a.AccountId, AccountName = a.Name, Balance = a.Balance });
