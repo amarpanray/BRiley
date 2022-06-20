@@ -16,27 +16,37 @@ namespace BankingApp.Controllers
         public ActionResult Index()
         {
             TransactionViewModels model = new TransactionViewModels();
-            var transactions = _transactRepo.GetTransactions();
 
-            if (transactions != null)
+            try
             {
-                model.Transactions = new List<TransactionViewModels>();
-                foreach (var trans in transactions)
+                var transactions = _transactRepo.GetTransactions();
+
+                if (transactions != null)
                 {
-                    model.Transactions.Add(new TransactionViewModels { 
-                    FromAccount = trans.FromAccount,
-                    ToAccount = trans.ToAccount,    
-                    TransactionTime = trans.TransactionTime,
-                    TransferAmount = trans.AmountDebited,
-                    BalanceFrom = trans.FromAccountBalance,
-                    BalanceTo = trans.ToAccountBalance,
-                    TransactionID = trans.TransactionId
-                    });
-                
-                }
+                    model.Transactions = new List<TransactionViewModels>();
+                    foreach (var trans in transactions)
+                    {
+                        model.Transactions.Add(new TransactionViewModels
+                        {
+                            FromAccount = trans.FromAccount,
+                            ToAccount = trans.ToAccount,
+                            TransactionTime = trans.TransactionTime,
+                            TransferAmount = trans.AmountDebited,
+                            BalanceFrom = trans.FromAccountBalance,
+                            BalanceTo = trans.ToAccountBalance,
+                            TransactionID = trans.TransactionId
+                        });
+
+                    }
+                } 
             }
-
-
+            catch (Exception ex)
+            {
+                //In lieu of logging error through Ilogger service
+                Console.WriteLine(ex);
+            }
+             
+           
             return View(model);
         }
 

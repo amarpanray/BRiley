@@ -5,11 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>All Transactions</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+ 
 <table class="table">
     <thead>
         <tr>
@@ -26,7 +24,7 @@
                  Transaction Time 
             </th>
             <th>
-                Amount Debited 
+                Amount debited 
             </th>
             <th>
               From Account Balance
@@ -75,13 +73,13 @@
             
             else
             {
-                <tr><td>No Transactions available</td></tr>
+                <tr><td>No Transactions available yet.</td></tr>
             
             }
         }
         else
         {
-            <tr><td>No Transactions available</td></tr>
+            <tr><td>No Transactions available yet.</td></tr>
             
         }
     </tbody>

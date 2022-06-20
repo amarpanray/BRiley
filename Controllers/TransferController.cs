@@ -20,19 +20,29 @@ namespace BankingApp.Controllers
         {
             TransferViewModels model = new TransferViewModels();
 
-            var accounts = _accountRepo.GetAccounts();
-
-            if (accounts != null)
+            try 
             {
-                model.FromAccounts = new List<TransferViewModels>();
-                model.ToAccounts = new List<TransferViewModels>();
+                var accounts = _accountRepo.GetAccounts();
 
-                foreach (var a in accounts)
+                if (accounts != null)
                 {
-                    model.FromAccounts.Add(new TransferViewModels { FromAccountId = a.AccountId, FromAccount = a.Name });
-                    model.ToAccounts.Add(new TransferViewModels { ToAccountId = a.AccountId, ToAccount = a.Name });
+                    model.FromAccounts = new List<TransferViewModels>();
+                    model.ToAccounts = new List<TransferViewModels>();
+
+                    foreach (var a in accounts)
+                    {
+                        model.FromAccounts.Add(new TransferViewModels { FromAccountId = a.AccountId, FromAccount = a.Name });
+                        model.ToAccounts.Add(new TransferViewModels { ToAccountId = a.AccountId, ToAccount = a.Name });
+                    }
                 }
             }
+            
+            catch (Exception ex) 
+            {
+                //In lieu of logging error through Ilogger service
+                Console.WriteLine(ex); 
+            }
+            
 
             return View(model);
         }
@@ -47,38 +57,48 @@ namespace BankingApp.Controllers
                 model.FromAccounts = new List<TransferViewModels>();
                 model.ToAccounts = new List<TransferViewModels>();
 
-                foreach (var a in accounts)
+                try
                 {
-                    model.FromAccounts.Add(new TransferViewModels { FromAccountId = a.AccountId, FromAccount = a.Name });
-                    model.ToAccounts.Add(new TransferViewModels { ToAccountId = a.AccountId, ToAccount = a.Name });
+
+                    foreach (var a in accounts)
+                    {
+                        model.FromAccounts.Add(new TransferViewModels { FromAccountId = a.AccountId, FromAccount = a.Name });
+                        model.ToAccounts.Add(new TransferViewModels { ToAccountId = a.AccountId, ToAccount = a.Name });
+                    }
+
+                    model.FromBalance = accounts.Where(x => x.AccountId == model.FromAccountId).Select(x => x.Balance).FirstOrDefault();
+                    model.FromAccount = accounts.Where(x => x.AccountId == model.FromAccountId).Select(x => x.Name).FirstOrDefault();
+
+                    model.ToBalance = accounts.Where(x => x.AccountId == model.ToAccountId).Select(x => x.Balance).FirstOrDefault();
+                    model.ToAccount = accounts.Where(x => x.AccountId == model.ToAccountId).Select(x => x.Name).FirstOrDefault();
+
+                    if (model.FromBalance < model.TransferAmount)
+                    {
+                        ModelState.AddModelError("InsufficientFunds", "You do not have sufficient funds to complete this transfer.");
+                    }
+
+                    if (model.FromAccountId == 0 || model.ToAccountId == 0)
+                    {
+                        ModelState.AddModelError("SelectAccounts", "You have to make a selection from drop downs 'From Account' AND 'To Account'");
+                    }
+
+                    if ((model.FromAccountId == model.ToAccountId) && (model.FromAccountId != 0 && model.ToAccountId != 0))
+                    {
+                        ModelState.AddModelError("SameAccountTransfer", "'From Account' and 'To Account' must be different for the transfer to be successful.");
+                    }
+
+                    if (model.TransferAmount < 1 || model.TransferAmount > 10000)
+                    {
+                        ModelState.AddModelError("TransferRange", "The transfer amount has to be between $1 and $10,000.");
+                    }
+
                 }
-
-                model.FromBalance = accounts.Where(x => x.AccountId == model.FromAccountId).Select(x => x.Balance).FirstOrDefault();
-                model.FromAccount = accounts.Where(x => x.AccountId == model.FromAccountId).Select(x => x.Name).FirstOrDefault();
-
-                model.ToBalance = accounts.Where(x => x.AccountId == model.ToAccountId).Select(x => x.Balance).FirstOrDefault();
-                model.ToAccount = accounts.Where(x => x.AccountId == model.ToAccountId).Select(x => x.Name).FirstOrDefault();
-
-                if (model.FromBalance < model.TransferAmount)
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError("InsufficientFunds", "You do not have sufficient funds to complete this transfer.");
+                    //In lieu of logging error through Ilogger service
+                    Console.WriteLine(ex);
+                    ModelState.AddModelError("Failure", "Account(s) cannot be found.");
                 }
-
-                if (model.FromAccountId == 0 || model.ToAccountId == 0)
-                {
-                    ModelState.AddModelError("SelectAccounts", "You have to make a selection from drop downs 'From Account' AND 'To Account'");
-                }
-
-                if ((model.FromAccountId == model.ToAccountId) && (model.FromAccountId != 0 && model.ToAccountId != 0))
-                {
-                    ModelState.AddModelError("SameAccountTransfer", "'From Account' and 'To Account' must be different for the transfer to be successful.");
-                }
-
-                if (model.TransferAmount < 1 || model.TransferAmount > 10000)
-                {
-                    ModelState.AddModelError("TransferRange", "The transfer amount has to be between $1 and $10,000.");
-                }
-
             }
             else
             { ModelState.AddModelError("InvalidAccount", "Account cannot be found."); }

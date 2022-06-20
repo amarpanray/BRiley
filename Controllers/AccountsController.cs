@@ -19,14 +19,25 @@ namespace BankingApp.Controllers
         public ActionResult Index()
         {
             AccountViewModels model = new AccountViewModels();
-            var accounts = _accountRepo.GetAccounts();
 
-            model.Accounts = new List<AccountViewModels>();
-
-            foreach (var a in accounts)
+            try
             {
-                model.Accounts.Add(new AccountViewModels {AccountID = a.AccountId, AccountName = a.Name, Balance = a.Balance });
+                var accounts = _accountRepo.GetAccounts();
+
+                model.Accounts = new List<AccountViewModels>();
+
+                foreach (var a in accounts)
+                {
+                    model.Accounts.Add(new AccountViewModels { AccountID = a.AccountId, AccountName = a.Name, Balance = a.Balance });
+                }
+
             }
+            catch(Exception ex)
+            {
+                //In lieu of logging error through Ilogger service
+                Console.WriteLine(ex);
+            }
+
             return View(model);
         }
 
